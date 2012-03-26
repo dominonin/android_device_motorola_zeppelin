@@ -1,0 +1,18 @@
+This is a device folder for the MB501!
+
+Currently, many things don't work.
+
+Working:
+- Touchscreen
+- Keylayouts
+- Sound
+- GPS
+- Calls/RIL
+- Accelerometer
+- Torch
+
+Not working:
+- Rest of the sensors
+- Camera/Video recording
+- HQ Videos
+- Data (sort of)
