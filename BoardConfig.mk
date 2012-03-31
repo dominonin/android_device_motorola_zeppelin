@@ -41,7 +41,7 @@ TARGET_OTA_ASSERT_DEVICE := zepp,zeppelin
 TARGET_PREBUILT_KERNEL := device/motorola/zeppelin/kernel
 BOARD_KERNEL_CMDLINE := no_console_suspend=1 console=null quiet
 BOARD_KERNEL_BASE := 0x10000000
-
+TARGET_PROVIDES_INIT_RC := true
 
 # WiFi
 BOARD_WPA_SUPPLICANT_DRIVER := WEXT
