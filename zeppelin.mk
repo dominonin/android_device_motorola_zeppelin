@@ -69,8 +69,10 @@ PRODUCT_PACKAGES += \
     libopencorehw \
     librpc \
     librs_jni \
-    lights.zeppelin \
-    sensors.zeppelin 
+    libstagefrighthw \
+    libOmxCore \
+    libmm-omxcore \
+    lights.zeppelin 
 
 
 # we have enough storage space to hold precise GC data
