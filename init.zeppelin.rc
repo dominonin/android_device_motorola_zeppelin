@@ -52,8 +52,10 @@ on init
     mkdir /data/local/12m/batch/log 0771 system system
  
 #  E-compass  
-    chown system system /dev/akm8973_aot
-    chown system system /dev/akm8973_dev
+    chown compass compass /dev/akm8973_aot
+    chown compass compass /dev/akm8973_dev
+    chmod 0664 /dev/akm8973_aot
+    chmod 0664 /dev/akm8973_dev
 
  # hw accel
     symlink /dev/msm_hw3dc /dev/hw3dc
@@ -187,10 +189,10 @@ service tcmd /system/bin/tcmd_engine usb0
     socket local_tcmd stream 0660 system system
     class TCMD
 
-service port_bridge /system/bin/port_bridge /dev/smd0 /dev/ttyHSUSB0
-	user radio
-	group system
-    class TCMD
+#service port_bridge /system/bin/port_bridge /dev/smd0 /dev/ttyHSUSB0
+#	user radio
+#	group system
+ #   class TCMD
 
 service fuel_gauge /system/bin/fuel_gauge --all
     class TCMD
