@@ -66,12 +66,9 @@ PRODUCT_PACKAGES += \
     copybit.zeppelin \
     libaudio \
     libcamera \
-    libopencorehw \
+    libloc_api-rpc \
     librpc \
     librs_jni \
-    libstagefrighthw \
-    libOmxCore \
-    libmm-omxcore \
     lights.zeppelin 
 
 
