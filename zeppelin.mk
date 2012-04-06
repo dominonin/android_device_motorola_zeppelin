@@ -45,6 +45,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
         ro.setupwizard.enable_bypass=1 \
         dalvik.vm.lockprof.threshold=500 \
         dalvik.vm.dexopt-flags=m=y \
+        ro.opengles.version=65536 \
         debug.sf.hw=1 \
         ro.media.dec.aud.wma.enabled=1 \
         ro.media.dec.vid.wmv.enabled=1
