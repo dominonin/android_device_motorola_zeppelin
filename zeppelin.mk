@@ -66,6 +66,7 @@ PRODUCT_PACKAGES += \
     copybit.zeppelin \
     libaudio \
     libcamera \
+    libloc_api \
     libloc_api-rpc \
     librpc \
     librs_jni \

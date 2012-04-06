@@ -17,7 +17,8 @@ subdir_makefiles := \
         $(LOCAL_PATH)/libaudio/Android.mk \
         $(LOCAL_PATH)/libcamera/Android.mk \
         $(LOCAL_PATH)/libcopybit/Android.mk \
-	$(LOCAL_PATH)/liblights/Android.mk 
+	$(LOCAL_PATH)/liblights/Android.mk  \
+        $(LOCAL_PATH)/loc_api/Android.mk
         
 
 include $(subdir_makefiles)
