@@ -99,9 +99,9 @@ on init
     chmod 0666 /dev/msm_camera0
     chown system system /dev/msm_camera/camera0
     chown system system /dev/msm_camera0
-    mkdir /cache/tmp 0666 system system
-    mount tmpfs tmpfs /cache/tmp
-    chmod 0666 /cache/tmp 
+   # mkdir /cache/tmp 0666 system system
+   # mount tmpfs tmpfs /cache/tmp
+   # chmod 0666 /cache/tmp 
 
 # Permissions changes needed for TCMD
     chown system system /dev/blan_enable
