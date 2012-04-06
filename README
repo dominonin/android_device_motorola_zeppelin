@@ -1,7 +1,5 @@
 This is a device folder for the MB501!
 
-Currently, many things don't work.
-
 Working:
 - Touchscreen
 - Keylayouts
@@ -10,11 +8,12 @@ Working:
 - Sensors
 - Torch
 - Data
+- Camera (Some bugs to iron out, though)
+- GPS
 
 Not working:
-- Camera/Video recording
+- Video recording
 - FM Radio
-- GPS
 - Videos (Partially; Falls back to software renderer)
 
 Due to the nature of the phone, or my abilities :P several OTHER things must be added to YOUR AOSP workspace if you so wish to compile this:
@@ -22,7 +21,7 @@ Due to the nature of the phone, or my abilities :P several OTHER things must be 
 
 1. Download the frameworks at this git and put them in YOUR folder.
 
-2. Delete YOUR libaudio because it conflicts.
+2. Delete YOUR libaudio (hardware/msm7k) and Qcom folder (hardware/qcom) because it conflicts.
 
 3. Go into hardware/libhardware_legacy/vibrator/vibrator.c 
 
