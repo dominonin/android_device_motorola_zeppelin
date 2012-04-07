@@ -15,9 +15,7 @@
 #
 
 #
-# This is the product configuration for a generic GSM passion,
-# not specialized for any geography.
-#
+# This is the product configuration for a GSM Zeppelin.
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
@@ -69,15 +67,19 @@ PRODUCT_PACKAGES += \
     libcamera \
     libloc_api \
     libloc_api-rpc \
+    libmm-omxcore \
+    libOmxCore \
+    libopencorehw \
     librpc \
     librs_jni \
+    libstagefrighthw \
     lights.zeppelin 
 
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
-# Passion uses high-density artwork where available
+# Zeppelin uses high-density artwork where available
 PRODUCT_LOCALES += mdpi
 
 PRODUCT_COPY_FILES += \
