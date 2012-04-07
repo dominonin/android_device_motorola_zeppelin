@@ -10,11 +10,13 @@ Working:
 - Data
 - Camera (Some bugs to iron out, though)
 - GPS
+- Videos
+
 
 Not working:
 - Video recording
 - FM Radio
-- Videos (Partially; Falls back to software renderer)
+
 
 Due to the nature of the phone, or my abilities :P several OTHER things must be added to YOUR AOSP workspace if you so wish to compile this:
 
