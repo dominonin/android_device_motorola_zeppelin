@@ -21,7 +21,6 @@ LOCAL_MODULE:= libaudiopolicy
 LOCAL_CFLAGS += -DWITH_A2DP
 include $(BUILD_SHARED_LIBRARY)
 
-
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := libaudio
@@ -40,21 +39,32 @@ ifneq ($(TARGET_SIMULATOR),true)
 LOCAL_SHARED_LIBRARIES += libdl
 endif
 
-LOCAL_CFLAGS += -DSURF
+#LOCAL_LDLIBS += -lpthread
+
+#ifeq ($(strip $(BOARD_USES_QCOM_7x_CHIPSET)), true)
+    LOCAL_CFLAGS += -DSURF
+#else ifeq ($(strip $(BOARD_USES_QCOM_8x_CHIPSET)), true)
+#    LOCAL_CFLAGS += -DSURF8K
+#endif
   
 LOCAL_SRC_FILES += AudioHardware.cpp
 
 LOCAL_CFLAGS += -fno-short-enums
 
+ifeq ($(strip $(BOARD_USES_QCOM_HARDWARE)), true)
 LOCAL_CFLAGS += -DMSM72XX_AUDIO
 LOCAL_CFLAGS += -DVOC_CODEC_DEFAULT=0
+endif
+
 LOCAL_CFLAGS += -DMOT_FEATURE_PLATFORM_MSM7K=1
-LOCAL_CFLAGS += -DHAVE_FM_RADIO=1 -DLIBAUDIO_ECLAIR=1
 
 LOCAL_STATIC_LIBRARIES += libaudiointerface
-LOCAL_SHARED_LIBRARIES += liba2dp
+#ifeq ($(BOARD_HAVE_BLUETOOTH),true)
+  LOCAL_SHARED_LIBRARIES += liba2dp
+#endif
 
 include $(BUILD_SHARED_LIBRARY)
 
 endif # not BUILD_TINY_ANDROID
+
 endif

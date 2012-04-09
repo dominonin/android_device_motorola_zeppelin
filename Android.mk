@@ -21,7 +21,7 @@ subdir_makefiles := \
         $(LOCAL_PATH)/libopencorehw/Android.mk \
         $(LOCAL_PATH)/libstagefrighthw/Android.mk \
         $(LOCAL_PATH)/loc_api/Android.mk \
-        $(LOCAL_PATH)/mm-core/Android.mk
+        $(LOCAL_PATH)/mm-core/Android.mk 
 
 
 include $(subdir_makefiles)

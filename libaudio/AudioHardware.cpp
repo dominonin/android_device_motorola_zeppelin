@@ -84,8 +84,7 @@ const uint32_t AudioHardware::inputSamplingRates[] = {
 
 AudioHardware::AudioHardware() :
     mInit(false), mMicMute(false), mBluetoothNrec(true), mBluetoothId(0),
-    mOutput(0), mSndEndpoints(NULL), mCurSndDevice(-1), 
-    mFmRadioEnabled(false),
+    mOutput(0), mSndEndpoints(NULL), mCurSndDevice(-1), mFmRadioEnabled(false),
     mTtyMode(TTY_OFF), mPrevMode(-1),
     SND_DEVICE_CURRENT(-1),
     SND_DEVICE_HANDSET(-1),
@@ -109,7 +108,7 @@ AudioHardware::AudioHardware() :
     SND_DEVICE_HEADSET_MOS(-1)
 {
 
-    LOGI("libaudio [[TEST2]] Cliq XT by firesnatch & turl (%s)", __DATE__);
+    LOGI("libaudio Cliq XT by firesnatch & turl (%s)", __DATE__);
     if (get_audpp_filter() == 0)
         audpp_filter_inited = true;
         LOGD("start AudioHardware");
@@ -314,28 +313,12 @@ status_t AudioHardware::setMicMute(bool state)
 // always call with mutex held
 status_t AudioHardware::setMicMute_nosync(bool state)
 {
-#ifdef LIBAUDIO_ECLAIR
-    struct msm_snd_device_config args;
-    int iReturn = NO_ERROR;
-
-    LOGI("setMicMute() mMicMute old value=%d, new=%d, mMode=%d, mCurSndDevice=%d", mMicMute, state, mMode, mCurSndDevice);
-    if (mMode == AudioSystem::MODE_IN_CALL || mMode == AudioSystem::MODE_NORMAL) {
-        mMicMute = state;
-        if (mCurSndDevice != -1) {
-            iReturn = doAudioRouteOrMute(mCurSndDevice);
-        }
-        // 100 milisecond delay - might not be necessary
-        usleep(100000);
-    }
-    return iReturn;
-#else
     LOGI("setMicMute() mMicMute old value=%d, new=%d", mMicMute, state);
     if (mMicMute != state) {
         mMicMute = state;
         return doAudioRouteOrMute(mCurSndDevice == -1 ? SND_DEVICE_CURRENT : mCurSndDevice);
     }
     return NO_ERROR;
-#endif
 }
 
 status_t AudioHardware::getMicMute(bool* state)
@@ -756,7 +739,9 @@ static status_t set_volume_rpc(int m7xSndDrvFd,
                                uint32_t method,
                                uint32_t volume)
 {
-    LOGI("rpc_snd_set_volume(device=%d, method=%d, volume=%d)\n", device, method, volume);
+#if LOG_SND_RPC
+    LOGD("rpc_snd_set_volume(device=%d, method=%d, volume=%d)\n", device, method, volume);
+#endif
 
     if (device == -1UL) return NO_ERROR;
 
@@ -876,7 +861,6 @@ status_t AudioHardware::do_route_audio_rpc(int m7xSndDrvFd, int device,
         return NO_ERROR;
 
     int fd;
-    static int iLastSndDevice = -1;
 
     fd = m7xSndDrvFd;
 
@@ -894,33 +878,15 @@ status_t AudioHardware::do_route_audio_rpc(int m7xSndDrvFd, int device,
      *                        # recording.
      */  
     struct msm_snd_device_config args;
-
-#ifdef LIBAUDIO_ECLAIR
-    LOGI("do_route_audio_rpc(iLastSndDevice=%d, new device=%d)", iLastSndDevice, device);
-    if (iLastSndDevice == device && device != SND_DEVICE_CURRENT) {
-        // calling doAudioRouteOrMute(mCurSndDevice) two times in a row
-        // can cause reboot.  This is a work-around that seems to prevent
-        // the problem.  4/30/2011
-        args.device = SND_DEVICE_CURRENT;
-        args.ear_mute = 1;
-        args.mic_mute = 0;
-        LOGI("do_route_audio_rpc(device=%d, ear_mute=%d, mic_mute=%d) CLEAR", args.device, args.ear_mute, args.mic_mute);
-        ioctl(m7xSndDrvFd, SND_SET_DEVICE, &args);
-    }
-#endif
-
     args.device = device;
     args.ear_mute = ear_mute ? SND_MUTE_MUTED : SND_MUTE_UNMUTED;
     args.mic_mute = mic_mute ? SND_MUTE_MUTED : SND_MUTE_UNMUTED;
     LOGI("do_route_audio_rpc(device=%d, ear_mute=%d, mic_mute=%d)", args.device, args.ear_mute, args.mic_mute);
-    iLastSndDevice = device;
-    
     if (ioctl(fd, SND_SET_DEVICE, &args) < 0) {
         LOGE("snd_set_device error."); 
         return -EIO;
     }
 
-    mCurSndDevice = device;
     return NO_ERROR;
 }
 
@@ -1127,18 +1093,6 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
                 }
             }
             audProcess = (ADRC_ENABLE | EQ_ENABLE | IIR_ENABLE);
-#ifdef LIBAUDIO_ECLAIR
-        } else if (outputDevices == 0x800) { /* DEVICE_OUT_FM_HEADSET */
-            /* firesnatch 01/01/2011 - Added route for FM radio */
-            LOGE("Routing audio to FM Wired Headset without MIC\n");
-            sndDevice = SND_DEVICE_FM_HEADSET;
-            audProcess = (ADRC_ENABLE | EQ_ENABLE | IIR_ENABLE);
-        } else if (outputDevices == 0x1000) { /* DEVICE_OUT_FM_SPEAKER */
-            /* firesnatch 01/01/2011 - Added route for FM radio */
-            LOGE("Routing audio to FM Speakerphone\n");
-            sndDevice = SND_DEVICE_FM_SPEAKER;
-            audProcess = (ADRC_ENABLE | EQ_ENABLE | IIR_ENABLE);
-#endif
         } else {
             if (mMode != AudioSystem::MODE_IN_CALL) {
                 LOGI("out-of-call: Routing audio to SND_DEVICE_HANDSET\n");
@@ -1155,6 +1109,7 @@ status_t AudioHardware::doRouting(AudioStreamInMSM72xx *input)
     if (sndDevice != -1 && sndDevice != mCurSndDevice) {
         ret = doAudioRouteOrMute(sndDevice);
         msm72xx_enable_audpp(audProcess,sndDevice);
+        mCurSndDevice = sndDevice;
     }
 
     return ret;
@@ -1436,10 +1391,8 @@ status_t AudioHardware::AudioStreamOutMSM72xx::setParameters(const String8& keyV
         param.remove(key);
     }
 
-#ifdef LIBAUDIO_ECLAIR
-    // do nothing
-#else
-    key = String8(AudioParameter::keyFmOn);
+// FM Radio support not yet implemented in Froyo
+ /*   key = String8(AudioParameter::keyFmOn);
     if (param.getInt(key, device) == NO_ERROR) {
        mHardware->setFmOnOff(true);
        param.remove(key);
@@ -1450,7 +1403,7 @@ status_t AudioHardware::AudioStreamOutMSM72xx::setParameters(const String8& keyV
        mHardware->setFmOnOff(false);
        param.remove(key);
     }
-#endif
+*/
 
     if (param.size()) {
         status = BAD_VALUE;
