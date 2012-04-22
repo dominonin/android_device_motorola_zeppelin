@@ -41,8 +41,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
         ro.config.vc_call_vol_steps=7 \
         ro.url.safetylegal=http://www.motorola.com/staticfiles/Support/legal/?model=MB501 \
         ro.setupwizard.enable_bypass=1 \
-        dalvik.vm.lockprof.threshold=500 \
-        dalvik.vm.dexopt-flags=m=y \
         ro.opengles.version=65536 \
         debug.sf.hw=1 \
         ro.media.dec.aud.wma.enabled=1 \
