@@ -8,14 +8,14 @@ Working:
 - Sensors
 - Torch
 - Data
-- Camera (Some bugs to iron out, though)
+- Camera (Flash doesn't turn on when it's supposed to, toggle it for now)
 - GPS
 - Videos
 
 
 Not working:
-- Video recording
-- FM Radio
+- Video recording (Freezes when record button pressed)
+- FM Radio (Probably never will)
 
 
 Due to the nature of the phone, or my abilities :P several OTHER things must be added to YOUR AOSP workspace if you so wish to compile this:
