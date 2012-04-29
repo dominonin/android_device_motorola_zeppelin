@@ -58,7 +58,7 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 # Graphics
 BOARD_EGL_CFG := device/motorola/zeppelin/egl.cfg
 BUILD_WITH_FULL_STAGEFRIGHT:= true
-
+TARGET_SF_NEEDS_REAL_DIMENSIONS := true
 
 # GPS
 BOARD_GPS_LIBRARIES := libloc_api
