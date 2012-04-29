@@ -71,7 +71,8 @@ PRODUCT_PACKAGES += \
     librpc \
     librs_jni \
     libstagefrighthw \
-    lights.zeppelin 
+    lights.zeppelin \
+    setrecovery
 
 
 # we have enough storage space to hold precise GC data
@@ -86,7 +87,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/motorola/zeppelin/btenable.sh:system/bin/btenable.sh \
     device/motorola/zeppelin/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    device/motorola/zeppelin/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf
+    device/motorola/zeppelin/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf 
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 LOCAL_KERNEL := device/motorola/zeppelin/kernel

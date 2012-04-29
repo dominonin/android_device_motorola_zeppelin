@@ -72,5 +72,6 @@ BOARD_USES_GENERIC_AUDIO := false
 TARGET_PROVIDES_LIBAUDIO := true
 
 # Recovery
+TARGET_RECOVERY_PRE_COMMAND := "/system/bin/setrecovery recovery"
 BOARD_CUSTOM_RECOVERY_KEYMAPPING:= ../../device/motorola/zeppelin/recovery/recovery_ui.c
 TARGET_PREBUILT_RECOVERY_KERNEL := device/motorola/zeppelin/recovery_kernel
