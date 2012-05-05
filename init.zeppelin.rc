@@ -1,5 +1,5 @@
 on init
-    exec /system/bin/charge_only_mode
+    exec /sbin/charge_only_mode
 
 on boot
 
@@ -162,10 +162,6 @@ service dhcpcd /system/bin/dhcpcd -ABKL eth0
     disabled
     oneshot
 
-service iprenew_eth0 /system/bin/dhcpcd -n
-    group dhcp
-    disabled
-    oneshot
 
 service autoip /system/bin/dhcpcd -B eth0
     class WLAN
